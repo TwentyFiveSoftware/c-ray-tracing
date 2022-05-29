@@ -11,8 +11,8 @@ int main() {
 
     for (uint32_t y = 0; y < HEIGHT; ++y) {
         for (uint32_t x = 0; x < WIDTH; ++x) {
-            double u = ((double) x) / ((double) WIDTH - 1);
-            double v = ((double) y) / ((double) HEIGHT - 1);
+            float u = ((float) x) / ((float) (WIDTH - 1));
+            float v = ((float) y) / ((float) (HEIGHT - 1));
 
             size_t index = (y * WIDTH + x);
             (pixels + index)->r = (uint8_t) (u * 0xFF);
