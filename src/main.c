@@ -1,9 +1,13 @@
 #include "image.h"
 #include "constants.h"
-#include <stdio.h>
+#include "vec3.h"
+#include "renderer.h"
+#include "camera.h"
 #include <stdlib.h>
 
 int main() {
+    camera camera = new_camera((vec3) {12.0f, 2.0f, -3.0f}, (vec3) {}, 25.0f, 10.0f);
+
     rgb *pixels = calloc(WIDTH * HEIGHT, sizeof(rgb));
     if (!pixels) {
         return 1;
@@ -14,10 +18,9 @@ int main() {
             float u = ((float) x) / ((float) (WIDTH - 1));
             float v = ((float) y) / ((float) (HEIGHT - 1));
 
-            size_t index = (y * WIDTH + x);
-            (pixels + index)->r = (uint8_t) (u * 0xFF);
-            (pixels + index)->g = (uint8_t) (v * 0xFF);
-            (pixels + index)->b = (uint8_t) (0.25 * 0xFF);
+            ray ray = get_camera_ray(&camera, u, v);
+            vec3 color = calculate_ray_color(&ray);
+            pixels[y * WIDTH + x] = color_to_rgb(color);
         }
     }
 

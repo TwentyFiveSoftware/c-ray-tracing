@@ -9,4 +9,4 @@ include_directories(${PNG_INCLUDE_DIR})
 FILE(GLOB_RECURSE PROJECT_SOURCES src/*c src/*h)
 add_executable(c_ray_tracing ${PROJECT_SOURCES})
 
-target_link_libraries(c_ray_tracing ${PNG_LIBRARY})
+target_link_libraries(c_ray_tracing PRIVATE ${PNG_LIBRARY} m)

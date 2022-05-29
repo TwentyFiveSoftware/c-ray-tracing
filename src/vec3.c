@@ -48,3 +48,7 @@ float vec_length(vec3 a) {
 vec3 vec_normalized(vec3 a) {
     return vec_div_scalar(a, vec_length(a));
 }
+
+vec3 vec_sqrt(vec3 a) {
+    return (vec3) {sqrtf(a.x), sqrtf(a.y), sqrtf(a.z)};
+}

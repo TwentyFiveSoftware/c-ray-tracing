@@ -27,3 +27,5 @@ vec3 vec_cross(vec3 a, vec3 b);
 float vec_length(vec3 a);
 
 vec3 vec_normalized(vec3 a);
+
+vec3 vec_sqrt(vec3 a);
