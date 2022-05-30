@@ -36,7 +36,7 @@ void save_image_as_png(const char *path, rgb *pixels) {
         png_byte *row = png_malloc(png_ptr, WIDTH * sizeof(uint8_t) * 3);
         rows[y] = row;
 
-        for (int x = 0; x < WIDTH; ++x) {
+        for (uint32_t x = 0; x < WIDTH; ++x) {
             rgb *pixel = pixels + y * WIDTH + x;
             row[x * 3 + 0] = pixel->r;
             row[x * 3 + 1] = pixel->g;

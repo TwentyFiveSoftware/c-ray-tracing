@@ -3,10 +3,16 @@
 #include "vec3.h"
 #include "renderer.h"
 #include "camera.h"
+#include "scene.h"
 #include <stdlib.h>
 
 int main() {
     camera camera = new_camera((vec3) {12.0f, 2.0f, -3.0f}, (vec3) {}, 25.0f, 10.0f);
+
+    scene scene = generate_scene();
+    if (!scene.spheres) {
+        return 1;
+    }
 
     rgb *pixels = calloc(WIDTH * HEIGHT, sizeof(rgb));
     if (!pixels) {
@@ -19,7 +25,7 @@ int main() {
             float v = ((float) y) / ((float) (HEIGHT - 1));
 
             ray ray = get_camera_ray(&camera, u, v);
-            vec3 color = calculate_ray_color(&ray);
+            vec3 color = calculate_ray_color(&scene, &ray);
             pixels[y * WIDTH + x] = color_to_rgb(color);
         }
     }
@@ -27,5 +33,6 @@ int main() {
     save_image_as_png("render.png", pixels);
 
     free(pixels);
+    free(scene.spheres);
     return 0;
 }
