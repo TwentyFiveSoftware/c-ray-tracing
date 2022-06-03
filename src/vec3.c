@@ -1,4 +1,5 @@
 #include "vec3.h"
+#include "utils.h"
 #include <math.h>
 
 vec3 vec_neg(vec3 a) {
@@ -51,4 +52,23 @@ vec3 vec_normalized(vec3 a) {
 
 vec3 vec_sqrt(vec3 a) {
     return (vec3) {sqrtf(a.x), sqrtf(a.y), sqrtf(a.z)};
+}
+
+vec3 vec_random_unit_vector() {
+    while (true) {
+        vec3 vector = (vec3) {
+                random_float() * 2.0f - 1.0f,
+                random_float() * 2.0f - 1.0f,
+                random_float() * 2.0f - 1.0f
+        };
+
+        if (vec_dot(vector, vector) < 1.0) {
+            return vec_normalized(vector);
+        }
+    }
+}
+
+bool is_near_zero(vec3 a) {
+    const float epsilon = 1e-8f;
+    return fabsf(a.x) < epsilon && fabsf(a.y) < epsilon && fabsf(a.z) < epsilon;
 }

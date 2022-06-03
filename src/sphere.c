@@ -30,5 +30,5 @@ hit_record ray_hit_sphere(sphere *sphere, ray *ray, float t_min, float t_max) {
         normal = vec_neg(normal);
     }
 
-    return (hit_record) {true, t, point, normal, is_front_face};
+    return (hit_record) {true, t, point, normal, is_front_face, sphere->material};
 }

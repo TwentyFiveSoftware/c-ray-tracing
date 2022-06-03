@@ -25,7 +25,7 @@ int main() {
             float v = ((float) y) / ((float) (HEIGHT - 1));
 
             ray ray = get_camera_ray(&camera, u, v);
-            vec3 color = calculate_ray_color(&scene, &ray);
+            vec3 color = calculate_ray_color(&scene, &ray, MAX_RAY_TRACE_DEPTH);
             pixels[y * WIDTH + x] = color_to_rgb(color);
         }
     }

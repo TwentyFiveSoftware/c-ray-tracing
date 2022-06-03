@@ -1,10 +1,21 @@
 #include "renderer.h"
+#include "scatter_record.h"
 #include <math.h>
 
-vec3 calculate_ray_color(scene *scene, ray *ray) {
+vec3 calculate_ray_color(scene *scene, ray *ray, int32_t depth) {
+    if (depth <= 0) {
+        return (vec3) {};
+    }
+
     hit_record hit_record = ray_hit_scene(scene, ray, 0.001f, INFINITY);
     if (hit_record.hit) {
-        return vec_mul_scalar(vec_add(hit_record.normal, (vec3) {1.0f, 1.0f, 1.0f}), 0.5f);
+        scatter_record scatter_record = scatter(ray, &hit_record);
+        if (scatter_record.does_scatter) {
+            return vec_mul(scatter_record.attenuation,
+                           calculate_ray_color(scene, &scatter_record.scattered_ray, depth - 1));
+        }
+
+        return (vec3) {};
     }
 
     const float t = 0.5f * (vec_normalized(ray->direction).y + 1.0f);

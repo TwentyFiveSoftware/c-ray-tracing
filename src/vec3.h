@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdbool.h>
+
 typedef struct {
     float x;
     float y;
@@ -29,3 +31,7 @@ float vec_length(vec3 a);
 vec3 vec_normalized(vec3 a);
 
 vec3 vec_sqrt(vec3 a);
+
+vec3 vec_random_unit_vector();
+
+bool is_near_zero(vec3 a);
