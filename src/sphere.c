@@ -24,7 +24,7 @@ hit_record ray_hit_sphere(sphere *sphere, ray *ray, float t_min, float t_max) {
 
     vec3 point = ray_at(ray, t);
     vec3 normal = vec_div_scalar(vec_sub(point, sphere->center), sphere->radius);
-    bool is_front_face = vec_dot(ray->direction, normal) < 0.0;
+    bool is_front_face = vec_dot(ray->direction, normal) < 0.0f;
 
     if (!is_front_face) {
         normal = vec_neg(normal);

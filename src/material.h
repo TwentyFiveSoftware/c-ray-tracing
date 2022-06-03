@@ -11,4 +11,5 @@ typedef enum {
 typedef struct {
     MATERIAL_TYPE material_type;
     vec3 albedo;
+    float refraction_index;
 } material;

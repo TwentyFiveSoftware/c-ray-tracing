@@ -34,4 +34,8 @@ vec3 vec_sqrt(vec3 a);
 
 vec3 vec_random_unit_vector();
 
-bool is_near_zero(vec3 a);
+bool vec_is_near_zero(vec3 a);
+
+vec3 vec_reflect(vec3 a, vec3 normal);
+
+vec3 vec_refract(vec3 a, vec3 normal, float refraction_ratio);

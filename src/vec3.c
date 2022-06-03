@@ -68,7 +68,27 @@ vec3 vec_random_unit_vector() {
     }
 }
 
-bool is_near_zero(vec3 a) {
+bool vec_is_near_zero(vec3 a) {
     const float epsilon = 1e-8f;
     return fabsf(a.x) < epsilon && fabsf(a.y) < epsilon && fabsf(a.z) < epsilon;
+}
+
+vec3 vec_reflect(vec3 a, vec3 normal) {
+    vec_sub(a, vec_mul_scalar(normal, 2.0f * vec_dot(a, normal)));
+}
+
+vec3 vec_refract(vec3 a, vec3 normal, float refraction_ratio) {
+    float cos_theta = fminf(vec_dot(normal, vec_neg(a)), 1.0f);
+    float sin_theta = sqrtf(1.0f - cos_theta * cos_theta);
+
+    float r0 = (1.0f - refraction_ratio) / (1.0f + refraction_ratio);
+    float reflectance = r0 * r0 + (1.0f - r0 * r0) * powf(1.0f - cos_theta, 5.0f);
+
+    if (refraction_ratio * sin_theta > 1.0f || reflectance > random_float()) {
+        return vec_reflect(a, normal);
+    }
+
+    vec3 r_out_perpendicular = vec_mul_scalar(vec_add(a, vec_mul_scalar(normal, cos_theta)), refraction_ratio);
+    vec3 r_out_parallel = vec_mul_scalar(normal, -sqrtf(1.0f - vec_dot(r_out_parallel, r_out_parallel)));
+    return vec_add(r_out_perpendicular, r_out_parallel);
 }

@@ -11,8 +11,17 @@ scene generate_scene() {
 
     uint32_t sphere_index = 0;
 
-    spheres[sphere_index++] = (sphere) {(vec3) {0.0f, 0.0f, -1.0f}, 0.5f,
-                                        {DIFFUSE, {1.0f, 0.0f, 0.0f}}};
+    spheres[sphere_index++] = (sphere) {{0.0f, -1000.0f, 1.0f}, 1000.0f,
+                                        {DIFFUSE, {0.95f, 0.95f, 0.95f}}};
+
+    spheres[sphere_index++] = (sphere) {{0.0f, 1.0f, 0.0f}, 1.0f,
+                                        {DIELECTRIC, .refraction_index = 1.5f}};
+
+    spheres[sphere_index++] = (sphere) {{-4.0f, 1.0f, 0.0f}, 1.0f,
+                                        {DIFFUSE, {0.6f, 0.3f, 0.1f}}};
+
+    spheres[sphere_index++] = (sphere) {{4.0f, 1.0f, 0.0f}, 1.0f,
+                                        {METAL, {0.7f, 0.6f, 0.5f}}};
 
     return (scene) {.spheres = spheres, .sphere_count = sphere_index};
 }
