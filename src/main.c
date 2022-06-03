@@ -4,6 +4,7 @@
 #include "renderer.h"
 #include "camera.h"
 #include "scene.h"
+#include "utils.h"
 #include <stdlib.h>
 
 int main() {
@@ -21,11 +22,18 @@ int main() {
 
     for (uint32_t y = 0; y < HEIGHT; ++y) {
         for (uint32_t x = 0; x < WIDTH; ++x) {
-            float u = ((float) x) / ((float) (WIDTH - 1));
-            float v = ((float) y) / ((float) (HEIGHT - 1));
+            vec3 color = (vec3) {};
 
-            ray ray = get_camera_ray(&camera, u, v);
-            vec3 color = calculate_ray_color(&scene, &ray, MAX_RAY_TRACE_DEPTH);
+            for (uint32_t sample = 0; sample < SAMPLES_PER_PIXEL; ++sample) {
+                float u = ((float) x + random_float()) / ((float) (WIDTH - 1));
+                float v = ((float) y + random_float()) / ((float) (HEIGHT - 1));
+
+                ray ray = get_camera_ray(&camera, u, v);
+                vec3 sample_color = calculate_ray_color(&scene, &ray, MAX_RAY_TRACE_DEPTH);
+                color = vec_add(color, sample_color);
+            }
+
+            color = vec_div_scalar(color, (float) SAMPLES_PER_PIXEL);
             pixels[y * WIDTH + x] = color_to_rgb(color);
         }
     }
