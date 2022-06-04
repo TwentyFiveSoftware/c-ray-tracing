@@ -7,6 +7,7 @@
 #include "utils.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 int main() {
     camera camera = new_camera((vec3) {12.0f, 2.0f, -3.0f}, (vec3) {}, 25.0f, 10.0f);
@@ -20,6 +21,8 @@ int main() {
     if (!pixels) {
         return 1;
     }
+
+    clock_t render_start_time = clock();
 
     for (uint32_t y = 0; y < HEIGHT; ++y) {
         printf("%d / %d (%.2f%%)\n", y + 1, HEIGHT, ((float) (y + 1) * 100.0f) / (float) HEIGHT);
@@ -40,6 +43,9 @@ int main() {
             pixels[y * WIDTH + x] = color_to_rgb(color);
         }
     }
+
+    uint32_t elapsed_render_time = (uint32_t) (((float) (clock() - render_start_time) * 1000.0f) / CLOCKS_PER_SEC);
+    printf("Rendered %d samples/pixel with %d threads in %d ms", SAMPLES_PER_PIXEL, 1, elapsed_render_time);
 
     save_image_as_png("render.png", pixels);
 
