@@ -6,6 +6,7 @@
 #include "scene.h"
 #include "utils.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int main() {
     camera camera = new_camera((vec3) {12.0f, 2.0f, -3.0f}, (vec3) {}, 25.0f, 10.0f);
@@ -21,6 +22,8 @@ int main() {
     }
 
     for (uint32_t y = 0; y < HEIGHT; ++y) {
+        printf("%d / %d (%.2f%%)\n", y + 1, HEIGHT, ((float) (y + 1) * 100.0f) / (float) HEIGHT);
+
         for (uint32_t x = 0; x < WIDTH; ++x) {
             vec3 color = (vec3) {};
 

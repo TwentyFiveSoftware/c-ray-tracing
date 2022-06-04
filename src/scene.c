@@ -1,5 +1,6 @@
 #include <malloc.h>
 #include "scene.h"
+#include "utils.h"
 
 scene generate_scene() {
     uint32_t max_spheres = 500;
@@ -23,6 +24,25 @@ scene generate_scene() {
 
     spheres[sphere_index++] = (sphere) {{4.0f, 1.0f, 0.0f}, 1.0f,
                                         {METAL, SOLID, {0.7f, 0.6f, 0.5f}}};
+
+    for (int32_t x = -11; x < 11; ++x) {
+        for (int32_t z = -11; z < 11; ++z) {
+            float material_random = random_float();
+            material sphere_material;
+
+            if (material_random < 0.8f) {
+                sphere_material = (material) {DIFFUSE, SOLID, random_color()};
+            } else if (material_random < 0.95f) {
+                sphere_material = (material) {METAL, SOLID, random_color()};
+            } else {
+                sphere_material = (material) {DIELECTRIC, .refraction_index = 1.5f};
+            }
+
+            spheres[sphere_index++] = (sphere) {
+                    {(float) x + 0.9f * random_float(), 0.2f, (float) z + 0.9f * random_float()},
+                    0.2f, sphere_material};
+        }
+    }
 
     return (scene) {.spheres = spheres, .sphere_count = sphere_index};
 }
