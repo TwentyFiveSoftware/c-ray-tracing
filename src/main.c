@@ -4,10 +4,11 @@
 #include "renderer.h"
 #include "camera.h"
 #include "scene.h"
-#include "utils.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include <pthread.h>
+#include <sys/time.h>
 
 int main() {
     camera camera = new_camera((vec3) {12.0f, 2.0f, -3.0f}, (vec3) {}, 25.0f, 10.0f);
@@ -22,34 +23,44 @@ int main() {
         return 1;
     }
 
-    clock_t render_start_time = clock();
-
-    for (uint32_t y = 0; y < HEIGHT; ++y) {
-        printf("%d / %d (%.2f%%)\n", y + 1, HEIGHT, ((float) (y + 1) * 100.0f) / (float) HEIGHT);
-
-        for (uint32_t x = 0; x < WIDTH; ++x) {
-            vec3 color = (vec3) {};
-
-            for (uint32_t sample = 0; sample < SAMPLES_PER_PIXEL; ++sample) {
-                float u = ((float) x + random_float()) / ((float) (WIDTH - 1));
-                float v = ((float) y + random_float()) / ((float) (HEIGHT - 1));
-
-                ray ray = get_camera_ray(&camera, u, v);
-                vec3 sample_color = calculate_ray_color(&scene, &ray, MAX_RAY_TRACE_DEPTH);
-                color = vec_add(color, sample_color);
-            }
-
-            color = vec_div_scalar(color, (float) SAMPLES_PER_PIXEL);
-            pixels[y * WIDTH + x] = color_to_rgb(color);
-        }
+    pthread_mutex_t next_row_lock;
+    uint32_t next_row = 0;
+    if (pthread_mutex_init(&next_row_lock, NULL) != 0) {
+        return 1;
     }
 
-    uint32_t elapsed_render_time = (uint32_t) (((float) (clock() - render_start_time) * 1000.0f) / CLOCKS_PER_SEC);
-    printf("Rendered %d samples/pixel with %d threads in %d ms", SAMPLES_PER_PIXEL, 1, elapsed_render_time);
+    thread_args *arg = malloc(sizeof(thread_args));
+    *arg = (thread_args) {&next_row_lock, &next_row, pixels, &camera, &scene};
+
+    pthread_t *threads = calloc(RENDER_THREADS, sizeof(pthread_t));
+
+    struct timeval render_start_time;
+    gettimeofday(&render_start_time, 0);
+
+
+    for (uint32_t i = 0; i < RENDER_THREADS; ++i) {
+        pthread_create(&threads[i], NULL, &render_thread, arg);
+    }
+
+    for (uint32_t i = 0; i < RENDER_THREADS; ++i) {
+        pthread_join(threads[i], NULL);
+    }
+
+
+    struct timeval render_end_time;
+    gettimeofday(&render_end_time, 0);
+
+    int64_t elapsed_render_time = (render_end_time.tv_sec - render_start_time.tv_sec) * 1000 +
+                                  (render_end_time.tv_usec - render_start_time.tv_usec) / 1000;
+    printf("Rendered %d samples/pixel with %d threads in %ld ms", SAMPLES_PER_PIXEL, RENDER_THREADS,
+           elapsed_render_time);
+
 
     save_image_as_png("render.png", pixels);
 
     free(pixels);
     free(scene.spheres);
+    free(threads);
+    pthread_mutex_destroy(&next_row_lock);
     return 0;
 }

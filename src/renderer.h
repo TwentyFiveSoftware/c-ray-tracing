@@ -4,7 +4,15 @@
 #include "ray.h"
 #include "image.h"
 #include "scene.h"
+#include "camera.h"
+#include <pthread.h>
 
-vec3 calculate_ray_color(scene *scene, ray *ray, int32_t depth);
+typedef struct {
+    pthread_mutex_t *next_row_lock;
+    uint32_t *next_row;
+    rgb *pixels;
+    camera *camera;
+    scene *scene;
+} thread_args;
 
-rgb color_to_rgb(vec3 color);
+void *render_thread(void *args);
