@@ -9,7 +9,7 @@ hit_record ray_hit_sphere(sphere *sphere, ray *ray, float t_min, float t_max) {
     float discriminant = half_b * half_b - a * c;
 
     if (discriminant < 0.0) {
-        return (hit_record) {};
+        return (hit_record) {.hit = false};
     }
 
     float sqrt_d = sqrtf(discriminant);
@@ -18,7 +18,7 @@ hit_record ray_hit_sphere(sphere *sphere, ray *ray, float t_min, float t_max) {
         t = (-half_b + sqrt_d) / a;
 
         if (t < t_min || t > t_max) {
-            return (hit_record) {};
+            return (hit_record) {.hit = false};
         }
     }
 

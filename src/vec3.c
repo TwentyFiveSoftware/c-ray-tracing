@@ -22,12 +22,8 @@ vec3 vec_mul_scalar(vec3 a, float scalar) {
     return (vec3) {a.x * scalar, a.y * scalar, a.z * scalar};
 }
 
-vec3 vec_div(vec3 a, vec3 b) {
-    return (vec3) {a.x / b.x, a.y / b.y, a.z / b.z};
-}
-
 vec3 vec_div_scalar(vec3 a, float scalar) {
-    return vec_mul_scalar(a, 1.0f / scalar);
+    return (vec3) {a.x / scalar, a.y / scalar, a.z / scalar};
 }
 
 float vec_dot(vec3 a, vec3 b) {
@@ -74,7 +70,7 @@ bool vec_is_near_zero(vec3 a) {
 }
 
 vec3 vec_reflect(vec3 a, vec3 normal) {
-    vec_sub(a, vec_mul_scalar(normal, 2.0f * vec_dot(a, normal)));
+    return vec_sub(a, vec_mul_scalar(normal, 2.0f * vec_dot(a, normal)));
 }
 
 vec3 vec_refract(vec3 a, vec3 normal, float refraction_ratio) {
@@ -89,6 +85,6 @@ vec3 vec_refract(vec3 a, vec3 normal, float refraction_ratio) {
     }
 
     vec3 r_out_perpendicular = vec_mul_scalar(vec_add(a, vec_mul_scalar(normal, cos_theta)), refraction_ratio);
-    vec3 r_out_parallel = vec_mul_scalar(normal, -sqrtf(1.0f - vec_dot(r_out_parallel, r_out_parallel)));
+    vec3 r_out_parallel = vec_mul_scalar(normal, -sqrtf(fabsf(1.0f - vec_dot(r_out_perpendicular, r_out_perpendicular))));
     return vec_add(r_out_perpendicular, r_out_parallel);
 }
