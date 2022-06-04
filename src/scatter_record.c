@@ -33,7 +33,7 @@ scatter_record scatter_metal(ray *ray, hit_record *hit_record) {
     vec3 scatter_direction = vec_reflect(vec_normalized(ray->direction), hit_record->normal);
 
     return (scatter_record) {
-            .does_scatter = vec_dot(scatter_direction, hit_record->normal) > 0.0f,
+            .does_scatter = vec_dot(&scatter_direction, &hit_record->normal) > 0.0f,
             .attenuation = texture_get_color(&hit_record->material, &hit_record->point),
             .scattered_ray = {hit_record->point, scatter_direction}
     };

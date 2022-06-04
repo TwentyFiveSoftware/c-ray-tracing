@@ -18,11 +18,9 @@ vec3 vec_mul(vec3 a, vec3 b);
 
 vec3 vec_mul_scalar(vec3 a, float scalar);
 
-vec3 vec_div(vec3 a, vec3 b);
-
 vec3 vec_div_scalar(vec3 a, float scalar);
 
-float vec_dot(vec3 a, vec3 b);
+float vec_dot(vec3 *a, vec3 *b);
 
 vec3 vec_cross(vec3 a, vec3 b);
 

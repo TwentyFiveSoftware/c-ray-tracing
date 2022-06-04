@@ -1,9 +1,13 @@
 #include "utils.h"
-#include <stdlib.h>
 #include <math.h>
+#include <stdint.h>
 
-float random_float() {
-    return (float) rand() / (float) RAND_MAX;
+uint32_t random_seed = 25;
+
+inline float random_float() {
+//    return (float) rand() / (float) RAND_MAX;
+    random_seed = (214013 * random_seed + 2531011);
+    return (float) ((random_seed >> 16) & 0x7FFF) / 0x7FFF;
 }
 
 vec3 hsv_to_rgb(float h, float s, float v) {

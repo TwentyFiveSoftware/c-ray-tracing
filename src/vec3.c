@@ -26,8 +26,8 @@ vec3 vec_div_scalar(vec3 a, float scalar) {
     return (vec3) {a.x / scalar, a.y / scalar, a.z / scalar};
 }
 
-float vec_dot(vec3 a, vec3 b) {
-    return a.x * b.x + a.y * b.y + a.z * b.z;
+float vec_dot(vec3 *a, vec3 *b) {
+    return a->x * b->x + a->y * b->y + a->z * b->z;
 }
 
 vec3 vec_cross(vec3 a, vec3 b) {
@@ -39,7 +39,7 @@ vec3 vec_cross(vec3 a, vec3 b) {
 }
 
 float vec_length(vec3 a) {
-    return sqrtf(vec_dot(a, a));
+    return sqrtf(vec_dot(&a, &a));
 }
 
 vec3 vec_normalized(vec3 a) {
@@ -58,7 +58,7 @@ vec3 vec_random_unit_vector() {
                 random_float() * 2.0f - 1.0f
         };
 
-        if (vec_dot(vector, vector) < 1.0) {
+        if (vec_dot(&vector, &vector) < 1.0) {
             return vec_normalized(vector);
         }
     }
@@ -70,11 +70,12 @@ bool vec_is_near_zero(vec3 a) {
 }
 
 vec3 vec_reflect(vec3 a, vec3 normal) {
-    return vec_sub(a, vec_mul_scalar(normal, 2.0f * vec_dot(a, normal)));
+    return vec_sub(a, vec_mul_scalar(normal, 2.0f * vec_dot(&a, &normal)));
 }
 
 vec3 vec_refract(vec3 a, vec3 normal, float refraction_ratio) {
-    float cos_theta = fminf(vec_dot(normal, vec_neg(a)), 1.0f);
+    vec3 minus_a = vec_neg(a);
+    float cos_theta = fminf(vec_dot(&normal, &minus_a), 1.0f);
     float sin_theta = sqrtf(1.0f - cos_theta * cos_theta);
 
     float r0 = (1.0f - refraction_ratio) / (1.0f + refraction_ratio);
@@ -85,6 +86,7 @@ vec3 vec_refract(vec3 a, vec3 normal, float refraction_ratio) {
     }
 
     vec3 r_out_perpendicular = vec_mul_scalar(vec_add(a, vec_mul_scalar(normal, cos_theta)), refraction_ratio);
-    vec3 r_out_parallel = vec_mul_scalar(normal, -sqrtf(fabsf(1.0f - vec_dot(r_out_perpendicular, r_out_perpendicular))));
+    vec3 r_out_parallel = vec_mul_scalar(normal,
+                                         -sqrtf(fabsf(1.0f - vec_dot(&r_out_perpendicular, &r_out_perpendicular))));
     return vec_add(r_out_perpendicular, r_out_parallel);
 }
