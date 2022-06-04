@@ -1,4 +1,19 @@
 #include "scatter_record.h"
+#include <math.h>
+
+vec3 texture_get_color(material *material, vec3 *point) {
+    switch (material->texture_type) {
+        case SOLID:
+            return material->albedo;
+        case CHECKERED: {
+            float size = 6.0f;
+            float sines = sinf(size * point->x) * sinf(size * point->y) * sinf(size * point->z);
+            return sines < 0.0f ? material->albedo : material->albedo2;
+        }
+    }
+
+    return (vec3) {};
+}
 
 scatter_record scatter_diffuse(hit_record *hit_record) {
     vec3 scatter_direction = vec_add(hit_record->normal, vec_random_unit_vector());
@@ -9,7 +24,7 @@ scatter_record scatter_diffuse(hit_record *hit_record) {
 
     return (scatter_record) {
             .does_scatter = true,
-            .attenuation = hit_record->material.albedo,
+            .attenuation = texture_get_color(&hit_record->material, &hit_record->point),
             .scattered_ray = {hit_record->point, scatter_direction}
     };
 }
@@ -19,7 +34,7 @@ scatter_record scatter_metal(ray *ray, hit_record *hit_record) {
 
     return (scatter_record) {
             .does_scatter = vec_dot(scatter_direction, hit_record->normal) > 0.0f,
-            .attenuation = hit_record->material.albedo,
+            .attenuation = texture_get_color(&hit_record->material, &hit_record->point),
             .scattered_ray = {hit_record->point, scatter_direction}
     };
 }
