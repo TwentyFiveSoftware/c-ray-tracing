@@ -7,4 +7,6 @@ typedef struct {
     vec3 direction;
 } ray;
 
-vec3 ray_at(ray *ray, float t);
+inline vec3 ray_at(ray *ray, float t) {
+    return vec_add(ray->origin, vec_mul_scalar(ray->direction, t));
+}

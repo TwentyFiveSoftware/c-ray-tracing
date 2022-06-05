@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <pthread.h>
 
-vec3 calculate_ray_color(scene *scene, ray *ray, int32_t depth) {
+static vec3 calculate_ray_color(scene *scene, ray *ray, int32_t depth) {
     if (depth <= 0) {
         return (vec3) {};
     }
@@ -27,14 +27,14 @@ vec3 calculate_ray_color(scene *scene, ray *ray, int32_t depth) {
                    vec_mul_scalar((vec3) {0.5f, 0.7f, 1.0f}, t));
 }
 
-rgb color_to_rgb(vec3 color) {
+static rgb color_to_rgb(vec3 color) {
     color = vec_sqrt(color);
     color = vec_mul_scalar(color, 0xFF);
 
     return (rgb) {(uint8_t) color.x, (uint8_t) color.y, (uint8_t) color.z};
 }
 
-void render_row(uint32_t y, rgb *pixels, camera *camera, scene *scene) {
+static void render_row(uint32_t y, rgb *pixels, camera *camera, scene *scene) {
     for (uint32_t x = 0; x < WIDTH; ++x) {
         vec3 color = (vec3) {};
 

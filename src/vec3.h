@@ -8,19 +8,33 @@ typedef struct {
     float z;
 } vec3;
 
-vec3 vec_neg(vec3 a);
+inline vec3 vec_neg(vec3 a) {
+    return (vec3) {-a.x, -a.y, -a.z};
+}
 
-vec3 vec_add(vec3 a, vec3 b);
+inline vec3 vec_add(vec3 a, vec3 b) {
+    return (vec3) {a.x + b.x, a.y + b.y, a.z + b.z};
+}
 
-vec3 vec_sub(vec3 a, vec3 b);
+inline vec3 vec_sub(vec3 a, vec3 b) {
+    return (vec3) {a.x - b.x, a.y - b.y, a.z - b.z};
+}
 
-vec3 vec_mul(vec3 a, vec3 b);
+inline vec3 vec_mul(vec3 a, vec3 b) {
+    return (vec3) {a.x * b.x, a.y * b.y, a.z * b.z};
+}
 
-vec3 vec_mul_scalar(vec3 a, float scalar);
+inline vec3 vec_mul_scalar(vec3 a, float scalar) {
+    return (vec3) {a.x * scalar, a.y * scalar, a.z * scalar};
+}
 
-vec3 vec_div_scalar(vec3 a, float scalar);
+inline vec3 vec_div_scalar(vec3 a, float scalar) {
+    return (vec3) {a.x / scalar, a.y / scalar, a.z / scalar};
+}
 
-float vec_dot(vec3 *a, vec3 *b);
+inline float vec_dot(const vec3 *a, const vec3 *b) {
+    return a->x * b->x + a->y * b->y + a->z * b->z;
+}
 
 vec3 vec_cross(vec3 a, vec3 b);
 

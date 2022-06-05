@@ -1,7 +1,7 @@
 #include "scatter_record.h"
 #include <math.h>
 
-vec3 texture_get_color(material *material, vec3 *point) {
+static vec3 texture_get_color(material *material, vec3 *point) {
     switch (material->texture_type) {
         case SOLID:
             return material->albedo;
@@ -15,7 +15,7 @@ vec3 texture_get_color(material *material, vec3 *point) {
     return (vec3) {};
 }
 
-scatter_record scatter_diffuse(hit_record *hit_record) {
+static scatter_record scatter_diffuse(hit_record *hit_record) {
     vec3 scatter_direction = vec_add(hit_record->normal, vec_random_unit_vector());
 
     if (vec_is_near_zero(scatter_direction)) {
@@ -29,7 +29,7 @@ scatter_record scatter_diffuse(hit_record *hit_record) {
     };
 }
 
-scatter_record scatter_metal(ray *ray, hit_record *hit_record) {
+static scatter_record scatter_metal(ray *ray, hit_record *hit_record) {
     vec3 scatter_direction = vec_reflect(vec_normalized(ray->direction), hit_record->normal);
 
     return (scatter_record) {
@@ -39,7 +39,7 @@ scatter_record scatter_metal(ray *ray, hit_record *hit_record) {
     };
 }
 
-scatter_record scatter_dielectric(ray *ray, hit_record *hit_record) {
+static scatter_record scatter_dielectric(ray *ray, hit_record *hit_record) {
     float refraction_ratio = hit_record->is_front_face ? 1.0f / hit_record->material.refraction_index
                                                        : hit_record->material.refraction_index;
     vec3 scatter_direction = vec_refract(vec_normalized(ray->direction), hit_record->normal, refraction_ratio);
