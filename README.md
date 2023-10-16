@@ -29,11 +29,13 @@ depth, the same resolution (1920 x 1080). The measured times are averaged over m
 
 *Reference system: AMD Ryzen 9 5900X (12 Cores / 24 Threads) | AMD Radeon RX 6800 XT*
 
-|                                                                                                    | 1 sample / pixel | 100 samples / pixel |     10,000 samples / pixel | 
-|----------------------------------------------------------------------------------------------------|-----------------:|--------------------:|---------------------------:|
-| [Go](https://github.com/TwentyFiveSoftware/go-ray-tracing)                                         |       4,150.0 ms |             428.5 s |  ~ 11.9 h _(extrapolated)_ |
-| [C++](https://github.com/TwentyFiveSoftware/ray-tracing)                                           |         685.0 ms |              70.1 s |   ~ 1.9 h _(extrapolated)_ |
-| [Rust](https://github.com/TwentyFiveSoftware/rust-ray-tracing)                                     |         640.0 ms |              66.1 s |   ~ 1.8 h _(extrapolated)_ |
-| [C](https://github.com/TwentyFiveSoftware/c-ray-tracing)                                           |         329.0 ms |              32.8 s |   ~ 0.9 h _(extrapolated)_ |
-| [GPU - Compute Shader](https://github.com/TwentyFiveSoftware/ray-tracing-gpu)                      |          21.5 ms |               2.1 s |                    215.0 s |
-| [GPU - Vulkan Ray Tracing extension](https://github.com/TwentyFiveSoftware/ray-tracing-gpu-vulkan) |           1.2 ms |               0.1 s |                     12.5 s |
+|                                                                                                    | 1 sample / pixel | 100 samples / pixel | 
+|----------------------------------------------------------------------------------------------------|-----------------:|--------------------:|
+| [Elixir](https://github.com/TwentyFiveSoftware/elixir-ray-tracing)                                 |        67,200 ms |                 N/A |
+| [Go](https://github.com/TwentyFiveSoftware/go-ray-tracing)                                         |         1,410 ms |               142 s |
+| [Java](https://github.com/TwentyFiveSoftware/java-ray-tracing)                                     |           770 ms |                59 s |
+| [C++](https://github.com/TwentyFiveSoftware/ray-tracing)                                           |           685 ms |                70 s |
+| [Rust](https://github.com/TwentyFiveSoftware/rust-ray-tracing)                                     |           640 ms |                66 s |
+| [C](https://github.com/TwentyFiveSoftware/c-ray-tracing)                                           |           329 ms |                33 s |
+| [GPU - Compute Shader](https://github.com/TwentyFiveSoftware/ray-tracing-gpu)                      |            21 ms |                 2 s |
+| [GPU - Vulkan Ray Tracing Extension](https://github.com/TwentyFiveSoftware/ray-tracing-gpu-vulkan) |             1 ms |               0.1 s |

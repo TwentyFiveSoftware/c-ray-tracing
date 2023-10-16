@@ -51,7 +51,7 @@ int main() {
 
     int64_t elapsed_render_time = (render_end_time.tv_sec - render_start_time.tv_sec) * 1000 +
                                   (render_end_time.tv_usec - render_start_time.tv_usec) / 1000;
-    printf("Rendered %d samples/pixel with %d threads in %ld ms", SAMPLES_PER_PIXEL, RENDER_THREADS,
+    printf("rendered %d samples/pixel with %d threads in %ld ms\n", SAMPLES_PER_PIXEL, RENDER_THREADS,
            elapsed_render_time);
 
 
